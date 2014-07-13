@@ -107,6 +107,33 @@ public class Graficos2 extends JFrame implements KeyListener, ActionListener{
         contents.addChild(cuboC.getObjTrans());
         /*Vector3f tempor= new Vector3f(0.6f,-0.6f,0.0f);
         cuboC.setPosicionInicial(tempor);*/
+        
+        /*******************Aniadir Luz*******************/
+        // Creates a bounding sphere for the lights
+        BoundingSphere bounds = new BoundingSphere();
+        bounds.setRadius(1000d);
+
+        // Then create a directional light with the given
+        // direction and color
+       DirectionalLight lightD = new DirectionalLight(new Color3f(0.5f, 0.0f, 0.2f),new Vector3f(-0.9f, -0.6f, -1.0f));
+        //DirectionalLight lightD = new DirectionalLight(new Color3f(0.5f, 0.0f, 0.2f),new Vector3f(0.0f, 0.6f, 0.6f));
+
+        lightD.setInfluencingBounds(bounds);
+
+	// Then add it to the root BranchGroup
+        contents.addChild(lightD);
+        
+        BoundingSphere bounds2 = new BoundingSphere();
+        bounds2.setRadius(1000d);
+
+        // Then create a directional light with the given
+        // direction and color
+        DirectionalLight lightD2 = new DirectionalLight(new Color3f(0.5f, 1.0f, 0.2f),new Vector3f(0.6f, 0.6f, -1.0f));
+        lightD2.setInfluencingBounds(bounds2);
+
+	// Then add it to the root BranchGroup
+        //contents.addChild(lightD2);
+        
         /**********Universo******************/
         SimpleUniverse universe = new SimpleUniverse(canvas);
         universe.getViewingPlatform().setNominalViewingTransform();

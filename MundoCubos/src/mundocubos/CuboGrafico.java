@@ -4,9 +4,11 @@
  */
 package mundocubos;
 
+import com.sun.j3d.utils.geometry.Box;
 import com.sun.j3d.utils.geometry.ColorCube;
-import javax.media.j3d.Transform3D;
-import javax.media.j3d.TransformGroup;
+import java.awt.Color;
+import javax.media.j3d.*;
+import javax.vecmath.Color3f;
 import javax.vecmath.Vector3f;
 
 /**
@@ -19,11 +21,27 @@ public class CuboGrafico {
     private Vector3f v;
     private Vector3f vectorPosicionEnMesa; 
     private char nombre;
+    //private Color3f diffuse = new Color3f(0.01f, .7f, .5f);
+    //private Color3f spec = new Color3f(0.01f, .7f, .5f);
+
+    
+    private Color3f diffuse = new Color3f(0.5f,0.5f, 0);
+    private Color3f spec = new Color3f(0.5f, 0.5f, 0);
     
     public CuboGrafico(Vector3f posInicial,char nombre){
         this.nombre = nombre;
         this.vectorPosicionEnMesa = new Vector3f(posInicial.x,posInicial.y,posInicial.z);
         ColorCube c =  new ColorCube(0.1);
+        
+        Appearance app = new Appearance();
+        Material mat = new Material();
+        mat.setDiffuseColor(diffuse);
+        mat.setSpecularColor(spec);
+        mat.setShininess(5.0f);
+
+        app.setMaterial(mat);
+        Box box = new Box(0.1f, 0.1f, 0.1f, app);
+        
         objTrans = new TransformGroup();
         objTrans.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
 
@@ -31,9 +49,10 @@ public class CuboGrafico {
         v =  new Vector3f(posInicial.x,posInicial.y,posInicial.z);
         pos.setTranslation(v);
         
+        
         objTrans.setTransform(pos);
-        objTrans.addChild(c);
-        //contents.addChild(objTrans);
+        objTrans.addChild(box);
+        
     }
 
     public TransformGroup getObjTrans() {
