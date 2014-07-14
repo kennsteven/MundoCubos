@@ -19,6 +19,7 @@ public class Solucionador {
     EstadoDelMundo solucion;
     ArrayList<EstadoDelMundo> listaDeEstadosVisitados;
     ArrayList<EstadoDelMundo> listaDeSolucion;
+    ArrayList<String> listaDeMovimientos;
     boolean fin = false;
 
     public Solucionador(EstadoDelMundo inicial, EstadoDelMundo meta){

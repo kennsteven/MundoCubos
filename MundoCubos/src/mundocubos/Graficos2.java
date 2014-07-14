@@ -37,6 +37,7 @@ public class Graficos2 extends JFrame implements KeyListener, ActionListener{
     static final Vector3f POSMESAA= new Vector3f(-0.6f,-0.6f,0.0f);
     static final Vector3f POSMESAB= new Vector3f(0.0f, -0.6f, 0.0f);
     static final Vector3f POSMESAC= new Vector3f(0.6f,-0.6f,0.0f);
+    static final float distanciaEntreCubos = 0.4f;
     
     /*A mesa, B sobre C, C mesa*/
     /*
@@ -60,7 +61,7 @@ public class Graficos2 extends JFrame implements KeyListener, ActionListener{
     */
     /*Controlador*/
     private MundoCubos controlador;
-    Panel panel;
+    public Panel panel;
     /*Ojetos cubos y movimientos*/
     private int vectorCubosDebajo[] = {0,0,0};
     
@@ -84,12 +85,12 @@ public class Graficos2 extends JFrame implements KeyListener, ActionListener{
         Canvas3D canvas = new Canvas3D(config);
         canvas.addKeyListener(this);
 
-        this.setSize(800, 600);
+        this.setSize(800, 700);
         this.setVisible(true);
         this.add("North",new Label("Proyecto realizado por Kenneht Alvarado"));
         this.add("Center",canvas);
         this.add("South",panel);      
-        panel.setVisible(true);
+        this.panel.setVisible(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
 
@@ -248,7 +249,7 @@ public class Graficos2 extends JFrame implements KeyListener, ActionListener{
     public Vector3f moverArriba(CuboGrafico cubo){
         boolean seguir = true;
         Vector3f vectorNuevo = new Vector3f(cubo.getV().x, cubo.getV().y,cubo.getV().z);
-        float valorF = cubo.getV().y + 0.6f;
+        float valorF = cubo.getV().y + distanciaEntreCubos;
         while(seguir){
             vectorNuevo = new Vector3f(vectorNuevo.x, vectorNuevo.y + 0.01f,vectorNuevo.z);
             try {
@@ -271,7 +272,7 @@ public class Graficos2 extends JFrame implements KeyListener, ActionListener{
     public Vector3f moverAbajo(CuboGrafico cubo){
         boolean seguir = true;
         Vector3f vectorNuevo = new Vector3f(cubo.getV().x, cubo.getV().y,cubo.getV().z);
-        float valorF = cubo.getV().y - 0.6f;
+        float valorF = cubo.getV().y - distanciaEntreCubos;
         while(seguir){
             vectorNuevo = new Vector3f(vectorNuevo.x, vectorNuevo.y - 0.01f,vectorNuevo.z);
             cubo.getPos().setTranslation(vectorNuevo);

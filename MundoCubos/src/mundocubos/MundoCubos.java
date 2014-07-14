@@ -19,10 +19,13 @@ public class MundoCubos {
     }
     
     public void recibeDatos(String estadoInicial, String estadoFinal){
+        interfaz.panel.setVisible(false);
+        JOptionPane.showMessageDialog(null, "Estableciendo el estado inicial");
         setEstadoInicial(estadoInicial);
         System.out.println("------------------------------------------HASTA ACA--------------------------------");
         System.out.println(Arrays.toString(interfaz.getVectorDeBajo()));
         comenzarProcesamiento(estadoInicial, estadoFinal);
+        interfaz.panel.setVisible(true);
     }
     
     public void setEstadoInicial(String s){
@@ -43,6 +46,7 @@ public class MundoCubos {
     }
     
     private void mostrarAnimacionSolucion(boolean mostraMensajesEstados){
+        
         for(int i = 1; i < solucionador.getListaSolucion().size();i++){
             if(mostraMensajesEstados == true){
                 JOptionPane.showMessageDialog(null, "El siguiente estado es: "
