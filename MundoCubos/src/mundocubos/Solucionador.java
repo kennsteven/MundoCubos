@@ -337,7 +337,7 @@ public class Solucionador {
     }
     
     public static void main(String args[]){
-/*
+
         Estado e = new Estado("C", "M", "S");
         //System.out.println(e.getEstado());
         
@@ -355,7 +355,7 @@ public class Solucionador {
         
         Estado e6 = new Estado("C", "B", "S");
         //System.out.println(e6.getEstado());
-*/        
+     
        
         /*
         Estado e = new Estado("A", "M", "S");
@@ -377,7 +377,7 @@ public class Solucionador {
         //System.out.println(e6.getEstado());
         */
   
-        
+  /*      
         Estado e = new Estado("A", "M", "S");
         //System.out.println(e.getEstado());
         
@@ -395,7 +395,7 @@ public class Solucionador {
         
         Estado e6 = new Estado("C", "M", "S");
         //System.out.println(e6.getEstado());
-        
+    */    
         
         EstadoDelMundo ed = new EstadoDelMundo();
         ed.agregarEstado(e);

@@ -21,22 +21,35 @@ public class CuboGrafico {
     private Vector3f v;
     private Vector3f vectorPosicionEnMesa; 
     private char nombre;
+    
+    private Color3f vectorDifuse[] = {new Color3f(1.0f, 0f, 0f), //ROJO
+                                      new Color3f(0.0f, 1.0f, 0.0f), //VERDE
+                                      new Color3f(Color.GRAY)}; //AZUL
+    
+    private Color3f vectorSpec[] = {  new Color3f(1.0f, 0f, 0f),
+                                      new Color3f(0.01f, .7f, .5f),
+                                      new Color3f(0.01f, .7f, .5f)};
+    
+    //AZUL
     //private Color3f diffuse = new Color3f(0.01f, .7f, .5f);
     //private Color3f spec = new Color3f(0.01f, .7f, .5f);
-
     
-    private Color3f diffuse = new Color3f(0.5f,0.5f, 0);
-    private Color3f spec = new Color3f(0.5f, 0.5f, 0);
+    //ROJO
+    private Color3f diffuse = new Color3f(1.0f, 0f, 0f);
+    private Color3f spec = new Color3f(1.0f, 0f, 0f);
     
-    public CuboGrafico(Vector3f posInicial,char nombre){
+    //private Color3f diffuse = new Color3f(0.5f,0.5f, 0);
+    //private Color3f spec = new Color3f(0.5f, 0.5f, 0);
+    
+    public CuboGrafico(Vector3f posInicial,char nombre, int color){
         this.nombre = nombre;
         this.vectorPosicionEnMesa = new Vector3f(posInicial.x,posInicial.y,posInicial.z);
         ColorCube c =  new ColorCube(0.1);
         
         Appearance app = new Appearance();
         Material mat = new Material();
-        mat.setDiffuseColor(diffuse);
-        mat.setSpecularColor(spec);
+        mat.setDiffuseColor(vectorDifuse[color]);
+        mat.setSpecularColor(vectorSpec[color]);
         mat.setShininess(5.0f);
 
         app.setMaterial(mat);

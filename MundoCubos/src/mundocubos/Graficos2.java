@@ -16,6 +16,7 @@ import javax.vecmath.Point3d;
 import javax.vecmath.Vector3f;
 import com.sun.j3d.utils.universe.*;
 import java.awt.Color;
+import java.awt.color.ColorSpace;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -95,15 +96,15 @@ public class Graficos2 extends JFrame implements KeyListener, ActionListener{
         BranchGroup contents = new BranchGroup();
 
         /*******Cubo A*******************************/
-        cuboA = new CuboGrafico(POSMESAA, 'A');
+        cuboA = new CuboGrafico(POSMESAA, 'A',0);
         contents.addChild(cuboA.getObjTrans());
         
        /****Cubo B************************************/
-        cuboB = new CuboGrafico(POSMESAB, 'B');
+        cuboB = new CuboGrafico(POSMESAB, 'B', 1);
         contents.addChild(cuboB.getObjTrans());
 
        /***********CuboC*******************************/        
-        cuboC = new CuboGrafico(POSMESAC,'C');
+        cuboC = new CuboGrafico(POSMESAC,'C', 2);
         contents.addChild(cuboC.getObjTrans());
         /*Vector3f tempor= new Vector3f(0.6f,-0.6f,0.0f);
         cuboC.setPosicionInicial(tempor);*/
@@ -115,7 +116,7 @@ public class Graficos2 extends JFrame implements KeyListener, ActionListener{
 
         // Then create a directional light with the given
         // direction and color
-       DirectionalLight lightD = new DirectionalLight(new Color3f(0.5f, 0.0f, 0.2f),new Vector3f(-0.9f, -0.6f, -1.0f));
+       DirectionalLight lightD = new DirectionalLight(new Color3f(Color.YELLOW),new Vector3f(-0.9f, -0.6f, -1.0f));
         //DirectionalLight lightD = new DirectionalLight(new Color3f(0.5f, 0.0f, 0.2f),new Vector3f(0.0f, 0.6f, 0.6f));
 
         lightD.setInfluencingBounds(bounds);
@@ -128,11 +129,11 @@ public class Graficos2 extends JFrame implements KeyListener, ActionListener{
 
         // Then create a directional light with the given
         // direction and color
-        DirectionalLight lightD2 = new DirectionalLight(new Color3f(0.5f, 1.0f, 0.2f),new Vector3f(0.6f, 0.6f, -1.0f));
+        DirectionalLight lightD2 = new DirectionalLight(new Color3f(Color.YELLOW),new Vector3f(0.6f, 0.6f, -1.0f));
         lightD2.setInfluencingBounds(bounds2);
 
 	// Then add it to the root BranchGroup
-        //contents.addChild(lightD2);
+       contents.addChild(lightD2);
         
         /**********Universo******************/
         SimpleUniverse universe = new SimpleUniverse(canvas);
@@ -195,7 +196,7 @@ public class Graficos2 extends JFrame implements KeyListener, ActionListener{
     }
     
     public void moverAlaMesa2(CuboGrafico cubo, Vector3f v){
-        CuboGrafico cuboN = new CuboGrafico(v, 'T');
+        CuboGrafico cuboN = new CuboGrafico(v, 'T', 0);
         moverCuboA2(cubo, cuboN);
         int finCiclo = vectorCubosDebajo[cubo.getNombre() - 65];
         System.out.println(Arrays.toString(this.getVectorDeBajo()));

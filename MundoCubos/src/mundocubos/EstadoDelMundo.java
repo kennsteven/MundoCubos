@@ -100,7 +100,7 @@ public class EstadoDelMundo {
         return respuesta;
     }
 
-        public boolean iguales(EstadoDelMundo ed1, EstadoDelMundo ed2 ){
+    public boolean iguales(EstadoDelMundo ed1, EstadoDelMundo ed2 ){
         ArrayList<Estado> lista1 = ed1.getLista();
         ArrayList<Estado> lista2 = ed2.getLista();
         boolean respuesta = true;
