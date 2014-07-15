@@ -46,17 +46,24 @@ public class MundoCubos {
     }
     
     private void mostrarAnimacionSolucion(boolean mostraMensajesEstados){
-        
+        String sTemporal = "";
+        String solucionTotal = "";
         for(int i = 1; i < solucionador.getListaSolucion().size();i++){
             if(mostraMensajesEstados == true){
-                JOptionPane.showMessageDialog(null, "El siguiente estado es: "
-                + solucionador.getListaSolucion().get(i).imprimirLista());
+                sTemporal = solucionador.getListaSolucion().get(i).imprimirLista();
+                solucionTotal += sTemporal + "\n";
+                JOptionPane.showMessageDialog(null, "El siguiente estado es: " + sTemporal);
             }
             for(int j = 0; j < solucionador.getListaSolucion().get(i).getLista().size(); j++){
                 Estado e = solucionador.getListaSolucion().get(i).getLista().get(j);
                 interfaz.moverCubo(e.getEstado().charAt(2), e.getEstado().charAt(4));
             }
             //System.out.println("-----CAMBIO DE ESTADO-------");
+        }
+        
+        if(mostraMensajesEstados == true){    
+            JOptionPane.showMessageDialog(null, "La lista completa de estado es : \n" 
+                    + solucionTotal);
         }
     }
     
