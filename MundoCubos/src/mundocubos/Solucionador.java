@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package mundocubos;
 
 import java.util.ArrayList;
@@ -26,6 +22,7 @@ public class Solucionador {
         estadoTemporal = new EstadoDelMundo();
         listaDeEstadosVisitados = new ArrayList<EstadoDelMundo>();
         listaDeSolucion = new ArrayList<EstadoDelMundo>();
+        listaDeMovimientos = new ArrayList<String>();
         this.estadoInicial = inicial;
         this.estadoMeta = meta;
     }
@@ -36,7 +33,6 @@ public class Solucionador {
     
     public void eliminarRangoEstados(ArrayList<EstadoDelMundo> listaDeEstados, int ini, int fin){
         for(int i = ini; i < fin; i++ ){
-            System.out.println("EL I ES: " + i + " el size es: " + listaDeEstados.size());
             listaDeEstados.remove(i);
         }
     }
@@ -51,7 +47,6 @@ public class Solucionador {
     public boolean cicloAnalizarSolucion(ArrayList<EstadoDelMundo> listaDeEstados){
         for(int i = 0; i < listaDeEstados.size(); i++){
             EstadoDelMundo estadoActual = listaDeEstados.get(i);
-            System.out.println("Ciclo for i= " + i + " size = " + listaDeEstados.size());
             for(int j =(listaDeEstados.size()-1); j > i+1 ; j--){
                 
                 for(int k = 0; k < estadoActual.getLista().size(); k++){
@@ -61,10 +56,8 @@ public class Solucionador {
                     if(colocarMesa(temporal2, es.getCuboEncima(),es)){                          
                         temporal2.imprimirLista();
                         if(listaDeEstados.get(j).iguales(temporal2, listaDeEstados.get(j))){
-                            System.out.println("SI KLARROOO i= " + i + " j = " + j);
                             eliminarRangoEstados(listaDeEstados, i + 1,j);
                             return true;
-                            //break;
                         }
                     }
                     ArrayList<String> l; //Lista de cubos en los que se puede colocar encima el cubo actual
@@ -73,7 +66,6 @@ public class Solucionador {
                         temporal2 = estadoActual.copia();
                         if(colocarCubo1SobreCubo2(temporal2, es.getCuboEncima(), l.get(m),es)){
                             if(listaDeEstados.get(j).iguales(temporal2,listaDeEstados.get(j))){
-                                System.out.println("\nSI KLARROOO22 i= " + i + " j = " + j);
                                 eliminarRangoEstados(listaDeEstados, i + 1,j);
                                 return true;
                             }
@@ -89,13 +81,10 @@ public class Solucionador {
         //no tener nada encima
         Estado nuevo = null;
         if(ed.nadaEncima(cuboAmover)==false && ed.sobreLaMesa(cuboAmover)==false){
-            //System.out.println("Entro a colocar en la mesa");
             nuevo = new Estado(cuboAmover, "M", "S");
             ed.eliminarElemento(es);
             ed.agregarEstado(nuevo);
-            //System.out.println("El estado recibido en colocar a la mesa es: ");
             ed.imprimirLista();
-            int k = ed.getLista().size();
             return true;
         }else{
             return false;
@@ -105,15 +94,10 @@ public class Solucionador {
     public boolean colocarCubo1SobreCubo2(EstadoDelMundo ed,String cubo1, String cubo2, Estado es){
         Estado nuevo;
         if(!ed.nadaEncima(cubo1) && !ed.nadaEncima(cubo2)&& !cubo1.equals(cubo2)){
-            //System.out.println("\n\nEl estado que se tiene es: " + es.getEstado());
-            
-            //System.out.println("\n\nEl estado recibido en colocar uno sobre otro: ");
             ed.imprimirLista();
-            //System.out.println("Entro a colocar cubo " + cubo1 + "sobre " + cubo2);
             nuevo = new Estado(cubo1, cubo2, "S");
             ed.eliminarElemento(es);
             ed.agregarEstado(nuevo);
-            int k = ed.getLista().size();
             return true;
         }else{
             return false;
@@ -122,14 +106,12 @@ public class Solucionador {
     
     public boolean estadoDelmundoContenido(ArrayList<EstadoDelMundo> lista, EstadoDelMundo estados){
         boolean respuesta = false;
-        
         for(int i = 0; i < lista.size(); i++){
             if(lista.get(i).iguales(lista.get(i), estados)){
                 respuesta = true;
                 break;
             }
         }
-        
         return respuesta;
     }
     
@@ -144,12 +126,18 @@ public class Solucionador {
         System.out.println("\n] ");
     }
     
+    public String imprimirListaDeMovimeintos(ArrayList<String> lista){
+        String respuesta = "";
+        for(int i = 0; i< lista.size(); i++){
+            respuesta += (i+1) + ". " + lista.get(i) + "\n";
+        }
+        return respuesta;
+    }
+    
     public void solucionar(){
-        //System.out.println("Entro1");
-        //System.out.println("\nEl inicial es: ");
         estadoInicial.imprimirLista();
         solucion = estadoInicial.copia();
-        soluciona2(solucion);
+        soluciona(solucion);
         analizarSolucion(getListaSolucion());
     }
     
@@ -158,47 +146,23 @@ public class Solucionador {
      * un estado a otro
      */
     public void soluciona(EstadoDelMundo estadoActual){
-        //System.out.println("Entro2");
         if(this.fin == false){
             if(estadoActual.iguales(estadoActual, estadoMeta)){
                 this.fin = true;
-                //System.out.println("CONDICION DE PARADA");
                 estadoActual.imprimirLista();
                 listaDeSolucion.add(0,estadoActual.copia());
                 return;
             }else{
-            /*Analiza todos los estados posibles a partir del movimiento de un solo cubo*/    
-                //System.out.println("Entro3");
+                /*Analiza todos los estados posibles a partir del movimiento de un solo cubo*/    
                 /*Solo lo ejecuta:
                  * Si el estado actual en el que estoy no ha sido visitado por esta posibilidad*/
-                //System.out.println("La respusta a si esta contenido es " + 
-                //estadoActual.estadoDelmundoContenido(listaDeEstadosVisitados, estadoActual));
-                
-                //System.out.println("El estado actual es: ");
-                //estadoActual.imprimirLista();
-                
-                //System.out.println("\nLos estados visitados son: ");
-                //imprimirListaDeEstadosDelMundo(listaDeEstadosVisitados);
-                
                 if(estadoActual.estadoDelmundoContenido(listaDeEstadosVisitados, estadoActual) == false){
-                    //System.out.println("Entro4");
                     EstadoDelMundo temporal = estadoActual.copia();
                     listaDeEstadosVisitados.add(0,temporal);
-                    
-                    //System.out.println("\nLos estados visitados despues del add: ");
-                    //imprimirListaDeEstadosDelMundo(listaDeEstadosVisitados);
-                    
                     /*Por cada elemento(estado) del mundo actual se analizan los posibles movimientos*/
                     for(int i = 0; i< estadoActual.getLista().size() && !fin;i++){
                         EstadoDelMundo temporal2 = estadoActual.copia();
-                        //System.out.println("Entro5");
                         Estado es = estadoActual.getLista().get(i);
-                        //System.out.println("el que esta encima es: "+ es.getCuboEncima());
-                        /**
-                         * Si se puede colocar en la mesa se coloca en la mesa y 
-                         * se analizan las siguientes posibilidades
-                        */
-
                         /*Si no se encuentra solucion colocando elemento en la mesa
                          * se busca colocar el cubo encima de de otro
                          */
@@ -210,96 +174,67 @@ public class Solucionador {
                             temporal2 = estadoActual.copia();
                             //Si se puede colocar el cubo encima de otro se anlizan las posibilidades
                             //a partir de ese nuevo estado
-                            //System.out.println("Entro 7");
                             if(colocarCubo1SobreCubo2(temporal2, es.getCuboEncima(), l.get(j),es)){
-                              //  System.out.println("Entro 8");
                                 soluciona(temporal2);
-                                //System.out.println("DESPUES DEL RETURN DE COLOCAR"+ this.fin);
                                 if(this.fin == true){
                                     listaDeSolucion.add(0,estadoActual.copia());
-                                  //  System.out.println("\nNO ENTRA ACA 2");
+                                    String s = "Mover cubo " + es.getCuboEncima() + " sobre " + l.get(j);
+                                    listaDeMovimientos.add(0,s);
                                     return;
                                 }
                             }
                         }
 
+                        /**
+                         * Si se puede colocar en la mesa se coloca en la mesa y 
+                         * se analizan las siguientes posibilidades
+                        */
                         if(colocarMesa(temporal2, es.getCuboEncima(),es)){
-                            
-                            //System.out.println("\nEl estado actual despues de ser modificado por la mesa es: ");
                             temporal2.imprimirLista();
-                            
-                            //System.out.println("Entro6");
                             soluciona(temporal2);
-                            //System.out.println("DESPUES DEL RETURN DE MESA" + fin);
                             if(this.fin == true){
-                                //System.out.println("NO ENTRA ACA 1");
-                                //temporal = estadoActual.copia();
                                 listaDeSolucion.add(0,estadoActual.copia());
+                                String s = "Mover cubo " + es.getCuboEncima() + " a la mesa";
+                                listaDeMovimientos.add(0,s);
                                 return;
                             }
                         }
-                        
-                        
                     }
                 }
-                
             }
         }
     }
     
     public void soluciona2(EstadoDelMundo estadoActual){
-        //System.out.println("Entro2");
         if(this.fin == false){
             if(estadoActual.iguales(estadoActual, estadoMeta)){
                 this.fin = true;
-                //System.out.println("CONDICION DE PARADA");
                 estadoActual.imprimirLista();
                 listaDeSolucion.add(0,estadoActual.copia());
                 return;
             }else{
             /*Analiza todos los estados posibles a partir del movimiento de un solo cubo*/    
-                //System.out.println("Entro3");
                 /*Solo lo ejecuta:
                  * Si el estado actual en el que estoy no ha sido visitado por esta posibilidad*/
-                //System.out.println("La respusta a si esta contenido es " + 
-                //estadoActual.estadoDelmundoContenido(listaDeEstadosVisitados, estadoActual));
-                
-                //System.out.println("El estado actual es: ");
-                //estadoActual.imprimirLista();
-                
-                //System.out.println("\nLos estados visitados son: ");
-                //imprimirListaDeEstadosDelMundo(listaDeEstadosVisitados);
-                
                 if(estadoActual.estadoDelmundoContenido(listaDeEstadosVisitados, estadoActual) == false){
-                    //System.out.println("Entro4");
                     EstadoDelMundo temporal = estadoActual.copia();
                     listaDeEstadosVisitados.add(0,temporal);
-                    
-                    //System.out.println("\nLos estados visitados despues del add: ");
-                    //imprimirListaDeEstadosDelMundo(listaDeEstadosVisitados);
                     
                     /*Por cada elemento(estado) del mundo actual se analizan los posibles movimientos*/
                     for(int i = 0; i< estadoActual.getLista().size() && !fin;i++){
                         EstadoDelMundo temporal2 = estadoActual.copia();
-                        //System.out.println("Entro5");
                         Estado es = estadoActual.getLista().get(i);
-                        //System.out.println("el que esta encima es: "+ es.getCuboEncima());
                         /**
                          * Si se puede colocar en la mesa se coloca en la mesa y 
                          * se analizan las siguientes posibilidades
                         */
                         if(colocarMesa(temporal2, es.getCuboEncima(),es)){
-                            
-                            //System.out.println("\nEl estado actual despues de ser modificado por la mesa es: ");
                             temporal2.imprimirLista();
-                            
-                            //System.out.println("Entro6");
                             soluciona(temporal2);
-                            //System.out.println("DESPUES DEL RETURN DE MESA" + fin);
                             if(this.fin == true){
-                                //System.out.println("NO ENTRA ACA 1");
-                                //temporal = estadoActual.copia();
                                 listaDeSolucion.add(0,estadoActual.copia());
+                                String s = "Mover cubo " + es.getCuboEncima() + " a la mesa";
+                                listaDeMovimientos.add(0,s);
                                 return;
                             }
                         }
@@ -308,31 +243,23 @@ public class Solucionador {
                          */
                         ArrayList<String> l; //Lista de elemtos en los que se puede colocar encima el cubo actual
                         l = estadoActual.cubosSinNadaEncima();
-                        //System.out.println("el tam es: " + l.size());
                         //Por cada elemento se analiza si el cubo actual se poene encima genera solución
                         for(int j = 0; j < l.size(); j++){
                             temporal2 = estadoActual.copia();
                             //Si se puede colocar el cubo encima de otro se anlizan las posibilidades
                             //a partir de ese nuevo estado
-                            //System.out.println("Entro 7");
                             if(colocarCubo1SobreCubo2(temporal2, es.getCuboEncima(), l.get(j),es)){
-                              //  System.out.println("Entro 8");
                                 soluciona(temporal2);
-                                //System.out.println("DESPUES DEL RETURN DE COLOCAR"+ this.fin);
                                 if(this.fin == true){
                                     listaDeSolucion.add(0,estadoActual.copia());
-                                  //  System.out.println("\nNO ENTRA ACA 2");
+                                    String s = "Mover cubo " + es.getCuboEncima() + " sobre " + l.get(j);
+                                    listaDeMovimientos.add(0,s);
                                     return;
                                 }
                             }
                         }
-
-                        
-                        
-                        
                     }
                 }
-                
             }
         }
     }
@@ -434,5 +361,7 @@ public class Solucionador {
         s.imprimirListaDeEstadosDelMundo(s.listaDeSolucion);
         System.out.println("Los visitados son: ");
         s.imprimirListaDeEstadosDelMundo(s.listaDeEstadosVisitados);
+        System.out.println("Los movimientos son: \n" + s.imprimirListaDeMovimeintos(s.listaDeMovimientos));
+        
     }
 }

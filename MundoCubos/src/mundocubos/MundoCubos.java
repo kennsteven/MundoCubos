@@ -52,18 +52,20 @@ public class MundoCubos {
             if(mostraMensajesEstados == true){
                 sTemporal = solucionador.getListaSolucion().get(i).imprimirLista();
                 solucionTotal += sTemporal + "\n";
-                JOptionPane.showMessageDialog(null, "El siguiente estado es: " + sTemporal);
+                JOptionPane.showMessageDialog(null, "El movimiento que se debe realizar es: \n" + 
+                        solucionador.listaDeMovimientos.get(i-1) +
+                        "\n\n El estado que se obtien como resultado es: \n" + sTemporal);
             }
             for(int j = 0; j < solucionador.getListaSolucion().get(i).getLista().size(); j++){
                 Estado e = solucionador.getListaSolucion().get(i).getLista().get(j);
                 interfaz.moverCubo(e.getEstado().charAt(2), e.getEstado().charAt(4));
             }
             //System.out.println("-----CAMBIO DE ESTADO-------");
-        }
-        
+        }        
         if(mostraMensajesEstados == true){    
             JOptionPane.showMessageDialog(null, "La lista completa de estado es : \n" 
-                    + solucionTotal);
+                    + solucionTotal + "\n " + "La lista de movimientos que se debe realizar es: \n"
+                    + solucionador.imprimirListaDeMovimeintos(solucionador.listaDeMovimientos));
         }
     }
     
